@@ -121,11 +121,11 @@ namespace StarterAssets
                             foreach (var package in compatiblePackages)
                             {
                                 // if no latest verified version found, PackageChecker will just install latest release
-                                if (packagesToAdd[i].name == package.name && package.versions.recommended != string.Empty)
+                                if (packagesToAdd[i].name == package.name && package.versions.verified != string.Empty)
                                 {
                                     // add latest verified version number to the packagetoadd list version
                                     // so that we get the latest verified version only
-                                    packagesToAdd[i].version = package.versions.recommended;
+                                    packagesToAdd[i].version = package.versions.verified;
 
                                     // add to our install list
                                     installRequired[i] = true;
@@ -154,7 +154,7 @@ namespace StarterAssets
 
                                         Debug.Log(
                                             $"<b>Package version behind</b>: {package.packageId} is behind latest verified " +
-                                            $"version {package.versions.recommended}. prompting user install");
+                                            $"version {package.versions.verified}. prompting user install");
                                         break;
 
                                     // latest verified matches installed version
@@ -163,7 +163,7 @@ namespace StarterAssets
 
                                         Debug.Log(
                                             $"<b>Package version match</b>: {package.packageId} matches latest verified version " +
-                                            $"{package.versions.recommended}. Skipped install");
+                                            $"{package.versions.verified}. Skipped install");
                                         break;
 
                                     // latest verified is behind installed version
@@ -175,7 +175,7 @@ namespace StarterAssets
 
                                         Debug.Log(
                                             $"<b>Package version ahead</b>: {package.packageId} is newer than latest verified " +
-                                            $"version {package.versions.recommended}, skipped install");
+                                            $"version {package.versions.verified}, skipped install");
                                         break;
                                 }
                             }
