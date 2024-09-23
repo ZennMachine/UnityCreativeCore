@@ -2,12 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBase : MonoBehaviour
+[CreateAssetMenu(fileName ="Wave", menuName = "SpawnManager/Wave")]
+public class Wave : ScriptableObject
 {
-    public float moveSpeed;
-    public float health;
-    public int scoreGiven;
-
+    public Enemy enemy;
+    public int numOfEnemies;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,10 +17,5 @@ public class EnemyBase : MonoBehaviour
     void Update()
     {
         
-    }
-
-    public void Death()
-    {
-
     }
 }
