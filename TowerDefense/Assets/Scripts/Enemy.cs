@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour
 {
     public float moveSpeed;
     public float health;
+    public int damage;
     public int scoreGiven;
     // This is the players base
     private Transform endPoint;
