@@ -13,6 +13,12 @@ public class DragTower : MonoBehaviour, IDragHandler, IDropHandler
     {
         startPosition = transform.position;
     }
+
+    private void Update()
+    {
+        
+    }
+
     public void OnDrag(PointerEventData eventData)
     {
         transform.position = eventData.position;
@@ -20,27 +26,22 @@ public class DragTower : MonoBehaviour, IDragHandler, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        Vector3 dropPos = eventData.pointerCurrentRaycast.worldPosition;
-        GameObject hitObj;
+        transform.position = startPosition;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-        if (Physics.Raycast(Camera.main.transform.position, dropPos, out hit, 100.0f, 7))
+        if (Physics.Raycast(ray, out hit))
         {
-            hitObj = hit.collider.gameObject;
-            Debug.Log(hitObj.name);
-            if (hitObj.CompareTag("Buildable"))
+            if (hit.collider.CompareTag("Buildable"))
             {
-                PlaceTower(hitObj.GetComponent<Tile>());
+                PlaceTower(hit.collider.GetComponent<Tile>());
             }
         }
 
-        //transform.position = startPosition;
-        //GameObject hitObj = eventData.pointerCurrentRaycast.gameObject;
-
-        
     }
 
     public void PlaceTower(Tile tile)
     {
+        Debug.Log("Tower Built");
         Instantiate(towerObject, tile.center);
     }
 }
