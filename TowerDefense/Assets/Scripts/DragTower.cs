@@ -43,5 +43,6 @@ public class DragTower : MonoBehaviour, IDragHandler, IDropHandler
     {
         Debug.Log("Tower Built");
         Instantiate(towerObject, tile.center);
+        tile.isOccupied = true;
     }
 }
