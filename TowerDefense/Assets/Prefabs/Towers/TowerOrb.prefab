@@ -183,8 +183,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 184c6466b78a35e4fb1cfd5c41a9e649, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireRate: 1.4
-  damage: 2
+  fireRate: 1.2
+  damage: 3
+  towerCost: 50
+  towerLevel: 0
   lr: {fileID: 5524036540051331094}
   range: 25
   targets: []

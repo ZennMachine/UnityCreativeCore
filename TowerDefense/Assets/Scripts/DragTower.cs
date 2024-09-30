@@ -8,9 +8,13 @@ public class DragTower : MonoBehaviour, IDragHandler, IDropHandler
 {
     public GameObject towerObject;
     public Vector3 startPosition;
+    private TowerDefenseManager tdm;
+    private int thisTowerCost;
 
     private void Awake()
     {
+        tdm = GameObject.Find("GameManager").GetComponent<TowerDefenseManager>();
+        thisTowerCost = towerObject.GetComponent<Tower>().towerCost;
         startPosition = transform.position;
     }
 
@@ -26,23 +30,36 @@ public class DragTower : MonoBehaviour, IDragHandler, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        transform.position = startPosition;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        LayerMask mask = LayerMask.GetMask("Tiles");
-        if (Physics.Raycast(ray, out hit, 1000.0f, mask))
+        if (tdm.coins >= thisTowerCost)
         {
+            tdm.RemoveCoins(thisTowerCost);
 
-            if (hit.collider.CompareTag("Buildable"))
+            transform.position = startPosition;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            LayerMask mask = LayerMask.GetMask("Tiles");
+            if (Physics.Raycast(ray, out hit, 1000.0f, mask))
             {
-                PlaceTower(hit.collider.GetComponent<Tile>());
+
+                if (hit.collider.CompareTag("Buildable"))
+                {
+                    PlaceTower(hit.collider.GetComponent<Tile>());
+                }
             }
         }
-
+        else
+        {
+            Debug.Log("YOURE BROKE");
+        }
     }
 
     public void PlaceTower(Tile tile)
     {
+        if ((tile.isOccupied))
+        {
+            Debug.Log("Cant build here");
+            return;
+        }
         Debug.Log("Tower Built");
         Instantiate(towerObject, tile.center);
         tile.isOccupied = true;

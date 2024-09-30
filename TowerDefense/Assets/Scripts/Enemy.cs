@@ -16,6 +16,8 @@ public class Enemy : MonoBehaviour
     private TowerDefenseManager tdm;
     [SerializeField]
     private SpriteRenderer healthBar;
+    [SerializeField]
+    private GameObject healthBarHolder;
     private float healthScale;
     private float healthBaseScale = 5.0f;
 
@@ -33,6 +35,11 @@ public class Enemy : MonoBehaviour
         agent.acceleration = moveSpeed;
     }
 
+    private void Update()
+    {
+        healthBarHolder.transform.LookAt(Camera.main.transform.position);
+    }
+
     public bool TakeDamage(int damage)
     {
         health -= damage;
@@ -48,7 +55,7 @@ public class Enemy : MonoBehaviour
 
     public void Death()
     {
-        tdm.score += scoreGiven;
+        tdm.AddCoins(scoreGiven);
         Destroy(gameObject);
     }
 }

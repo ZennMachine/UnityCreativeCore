@@ -10,6 +10,8 @@ public class Tower : MonoBehaviour
     private float fireRate;
     [SerializeField]
     private int damage;
+    public int towerCost;
+    public int towerLevel;
     [SerializeField]
     private LineRenderer lr;
     [SerializeField]
@@ -52,7 +54,7 @@ public class Tower : MonoBehaviour
             lr.gameObject.SetActive(true);
             lr.SetPosition(0, transform.position);
             lr.SetPosition(1, currentTarget.transform.position);
-            Debug.Log("Pew");
+            //Debug.Log("Pew");
             if (currentTarget.GetComponent<Enemy>().TakeDamage(damage))
             {
                 targets.Remove(currentTarget);
