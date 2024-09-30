@@ -29,8 +29,10 @@ public class DragTower : MonoBehaviour, IDragHandler, IDropHandler
         transform.position = startPosition;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit))
+        LayerMask mask = LayerMask.GetMask("Tiles");
+        if (Physics.Raycast(ray, out hit, 1000.0f, mask))
         {
+
             if (hit.collider.CompareTag("Buildable"))
             {
                 PlaceTower(hit.collider.GetComponent<Tile>());

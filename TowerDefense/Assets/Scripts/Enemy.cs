@@ -7,15 +7,25 @@ public class Enemy : MonoBehaviour
 {
     public float moveSpeed;
     public float health;
+    public float maxHealth;
     public int damage;
     public int scoreGiven;
     // This is the players base
     private Transform endPoint;
     private NavMeshAgent agent;
+    private TowerDefenseManager tdm;
+    [SerializeField]
+    private SpriteRenderer healthBar;
+    private float healthScale;
+    private float healthBaseScale = 5.0f;
 
     private void Awake()
     {
+        tdm = GameObject.FindAnyObjectByType<TowerDefenseManager>();
         agent = GetComponent<NavMeshAgent>();
+        healthBar.transform.localScale = new Vector3(healthBaseScale, 1, 1);
+        healthScale = transform.localScale.x / health;
+        maxHealth = health;
         if (endPoint == null)
             endPoint = GameObject.Find("EndPoint").transform;
         agent.SetDestination(endPoint.position);
@@ -23,21 +33,22 @@ public class Enemy : MonoBehaviour
         agent.acceleration = moveSpeed;
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public bool TakeDamage(int damage)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if(health <= 0)
+        health -= damage;
+        float newHealthScale = health * healthScale;
+        healthBar.transform.localScale = new Vector3(newHealthScale, 1, 1);
+        if (health <= 0)
+        {
             Death();
+            return true;
+        }
+        return false;
     }
 
     public void Death()
     {
-
+        tdm.score += scoreGiven;
+        Destroy(gameObject);
     }
 }

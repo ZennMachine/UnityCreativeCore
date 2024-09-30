@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
@@ -10,12 +11,11 @@ public class Tower : MonoBehaviour
     [SerializeField]
     private int damage;
     [SerializeField]
-    private GameObject projectile;
+    private LineRenderer lr;
     [SerializeField]
     private float range;
     [SerializeField]
     private List<GameObject> targets;
-    private GameObject currentTarget;
     private void OnDrawGizmos()
     {
         Gizmos.color = new Color(1, 0, 0, 0.6f);
@@ -28,7 +28,10 @@ public class Tower : MonoBehaviour
         // Instead of fancy coroutines or whatever, just check on each firerate cycle
         // if the tower has a valid target and onl then will it try to shoot.
         // This way on each firing cycle it can check if the target is still in range
+        CheckTargets();
         InvokeRepeating("CheckTargets", fireRate, fireRate);
+        lr.gameObject.SetActive(false);
+        lr.SetPosition(0, transform.position);
     }
 
     // Update is called once per frame
@@ -39,12 +42,28 @@ public class Tower : MonoBehaviour
 
     private void CheckTargets()
     {
-        if(currentTarget == null && targets[0] != null)
-            currentTarget = targets[0];
+        if (!targets.Any())
+            return;
+        GameObject currentTarget = targets[0];
 
-        GameObject obj = Instantiate(projectile, transform.position, Quaternion.identity);
-        obj.GetComponent<Projectile>().myTarget = currentTarget;
-        Debug.Log("Pew");
+
+        if(currentTarget != null)
+        {
+            lr.gameObject.SetActive(true);
+            lr.SetPosition(0, transform.position);
+            lr.SetPosition(1, currentTarget.transform.position);
+            Debug.Log("Pew");
+            if (currentTarget.GetComponent<Enemy>().TakeDamage(damage))
+            {
+                targets.Remove(currentTarget);
+            }
+            Invoke("TurnOffLineRenderer", 0.1f);
+        }
+    }
+
+    private void TurnOffLineRenderer()
+    {
+        lr.gameObject.SetActive(false);
     }
     
     private void OnTriggerEnter(Collider other)
