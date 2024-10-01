@@ -29,7 +29,7 @@ public class TowerDefenseManager : MonoBehaviour
     {
         lives -= damage;
         livesText.text = $"Health: {lives} / 20";
-        if (lives < 0)
+        if (lives <= 0)
             GameOver();
     }
 
@@ -47,17 +47,15 @@ public class TowerDefenseManager : MonoBehaviour
 
     public void GameOver()
     {
-        gameOverUI.SetActive(true);
-    }
-
-    public void ResetGame()
-    {
         coins = 200;
         lives = 20;
-        int enemiesInGame = waveManager.transform.childCount;
-        for(int i = 0; i < enemiesInGame; i++) 
+        Transform spawnPoint = waveManager.transform.GetChild(0);
+        foreach (Transform child in spawnPoint)
         {
-
+            GameObject.Destroy(child.gameObject);
         }
+        waveManager.GetComponent<WaveManager>().CancelInvoke();
+        waveManager.GetComponent<WaveManager>().ResetWaveManager();
+        gameOverUI.SetActive(true);
     }
 }

@@ -1756,6 +1756,7 @@ MonoBehaviour:
   livesText: {fileID: 1726828780}
   coinsText: {fileID: 1014063172}
   gameOverUI: {fileID: 2064622550}
+  waveManager: {fileID: 1688445994}
 --- !u!1001 &178188256
 PrefabInstance:
   m_ObjectHideFlags: 0

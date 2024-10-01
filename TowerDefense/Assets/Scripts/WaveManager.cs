@@ -22,9 +22,8 @@ public class WaveManager : MonoBehaviour
         currentWave++;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ResetWaveManager()
     {
-        
+        currentWave = 0;                                                                                                                                                                                                                                                                                                                        
     }
 }
