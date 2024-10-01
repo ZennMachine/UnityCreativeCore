@@ -3,19 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using GridTileMap;
+using TMPro;
+using UnityEngine.UI;
 
 public class DragTower : MonoBehaviour, IDragHandler, IDropHandler
 {
     public GameObject towerObject;
-    public Vector3 startPosition;
+    private Vector3 startPosition;
     private TowerDefenseManager tdm;
-    private int thisTowerCost;
-
+    private int myTowerCost;
+    [SerializeField]
+    private TextMeshProUGUI priceText;
+    private Sprite mySprite;
+    [SerializeField]
+    private Image myImage;
     private void Awake()
     {
+        
         tdm = GameObject.Find("GameManager").GetComponent<TowerDefenseManager>();
-        thisTowerCost = towerObject.GetComponent<Tower>().towerCost;
+        Tower myTower = towerObject.GetComponent<Tower>();
+        myTowerCost = myTower.towerCost;
         startPosition = transform.position;
+        priceText.text = myTowerCost.ToString();
+        mySprite = myTower.towerSprite;
+        myImage.sprite = mySprite;
     }
 
     private void Update()
@@ -30,11 +41,10 @@ public class DragTower : MonoBehaviour, IDragHandler, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        if (tdm.coins >= thisTowerCost)
+        if (tdm.coins >= myTowerCost)
         {
-            tdm.RemoveCoins(thisTowerCost);
+            tdm.RemoveCoins(myTowerCost);
 
-            transform.position = startPosition;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             LayerMask mask = LayerMask.GetMask("Tiles");
@@ -51,6 +61,7 @@ public class DragTower : MonoBehaviour, IDragHandler, IDropHandler
         {
             Debug.Log("YOURE BROKE");
         }
+        transform.position = startPosition;
     }
 
     public void PlaceTower(Tile tile)

@@ -12,12 +12,20 @@ public class Tower : MonoBehaviour
     private int damage;
     public int towerCost;
     public int towerLevel;
+    public Sprite towerSprite;
     [SerializeField]
     private LineRenderer lr;
     [SerializeField]
     private float range;
     [SerializeField]
     private List<GameObject> targets;
+    [SerializeField]
+    private AudioClip shootSoundClip;
+    private AudioSource shootSource;
+    [SerializeField]
+    private GameObject VFXPlacement;
+    public GameObject turretHead;
+
     private void OnDrawGizmos()
     {
         Gizmos.color = new Color(1, 0, 0, 0.6f);
@@ -34,6 +42,10 @@ public class Tower : MonoBehaviour
         InvokeRepeating("CheckTargets", fireRate, fireRate);
         lr.gameObject.SetActive(false);
         lr.SetPosition(0, transform.position);
+        shootSource = GetComponent<AudioSource>();
+        shootSource.clip = shootSoundClip;
+
+        Instantiate(VFXPlacement,transform.position, Quaternion.identity);
     }
 
     // Update is called once per frame
@@ -47,10 +59,14 @@ public class Tower : MonoBehaviour
         if (!targets.Any())
             return;
         GameObject currentTarget = targets[0];
-
+        
 
         if(currentTarget != null)
         {
+            Vector3 targetDir = turretHead.transform.position - currentTarget.transform.position;
+            turretHead.transform.Rotate(0, targetDir.y, 0);
+            shootSource.pitch = Random.Range(0.4f, 1.8f);
+            shootSource.Play();
             lr.gameObject.SetActive(true);
             lr.SetPosition(0, transform.position);
             lr.SetPosition(1, currentTarget.transform.position);

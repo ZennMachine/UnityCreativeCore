@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5376951913369451604}
   - component: {fileID: 2803838816119909791}
   - component: {fileID: 9101533387830655845}
+  - component: {fileID: 5325341522832946925}
   m_Layer: 2
   m_Name: ItemBox
   m_TagString: Untagged
@@ -77,6 +78,22 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5325341522832946925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1795686110432597841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf4599d6c4673164e9f942227f5f62a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  towerObject: {fileID: 8996905994485918072, guid: 60711376e402a5c449be4085d41aa68c,
+    type: 3}
+  priceText: {fileID: 896009570989783256}
+  myImage: {fileID: 4855587146671854916}
 --- !u!1 &3794979986055962209
 GameObject:
   m_ObjectHideFlags: 0

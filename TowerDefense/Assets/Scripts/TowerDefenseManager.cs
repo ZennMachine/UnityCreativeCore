@@ -6,11 +6,12 @@ using UnityEngine;
 public class TowerDefenseManager : MonoBehaviour
 {
     public int coins = 200;
-    public int lives;
+    public int lives = 20;
 
     public TextMeshProUGUI livesText;
     public TextMeshProUGUI coinsText;
     public GameObject gameOverUI;
+    public GameObject waveManager;
     // Start is called before the first frame update
     void Start()
     {
@@ -47,6 +48,16 @@ public class TowerDefenseManager : MonoBehaviour
     public void GameOver()
     {
         gameOverUI.SetActive(true);
+    }
 
+    public void ResetGame()
+    {
+        coins = 200;
+        lives = 20;
+        int enemiesInGame = waveManager.transform.childCount;
+        for(int i = 0; i < enemiesInGame; i++) 
+        {
+
+        }
     }
 }

@@ -21,16 +21,6 @@ public class WaveManager : MonoBehaviour
         Instantiate(enemySpawnList[currentWave], spawnPoint);
         currentWave++;
     }
-    /*
-    private void SpawnEnemy(Enemy enemy)
-    {
-        Instantiate(enemy, spawnPoint, true);
-    }*/
-    // Start is called before the first frame update
-    void Start()
-    {
-        StartWaveSpawner();
-    }
 
     // Update is called once per frame
     void Update()
