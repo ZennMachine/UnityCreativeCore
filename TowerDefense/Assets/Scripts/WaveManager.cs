@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class WaveManager : MonoBehaviour
 {
+    public TowerDefenseManager tdm;
     public int numOfWaves;
     private int currentWave = 0;
     public float waveTimer;
@@ -11,6 +12,11 @@ public class WaveManager : MonoBehaviour
     public Transform spawnPoint;
     public Dictionary<Enemy, int> enemySpawnDict;
     public List<GameObject> enemySpawnList;
+
+    private void Awake()
+    {
+        tdm = GameObject.Find("GameManager").GetComponent<TowerDefenseManager>();
+    }
     public void StartWaveSpawner()
     {
         InvokeRepeating("SpawnWave", 0.2f, waveTimer);
@@ -18,12 +24,31 @@ public class WaveManager : MonoBehaviour
 
     private void SpawnWave()
     {
-        Instantiate(enemySpawnList[currentWave], spawnPoint);
-        currentWave++;
+        if (currentWave == numOfWaves)
+        {
+            Debug.Log("End of game");
+            InvokeRepeating("CheckEnemies", 5.0f, 2.0f);
+        }
+        else
+        {
+            Instantiate(enemySpawnList[currentWave], spawnPoint);
+            currentWave++;
+        }
     }
 
     public void ResetWaveManager()
     {
         currentWave = 0;                                                                                                                                                                                                                                                                                                                        
+    }
+
+    public void CheckEnemies()
+    {
+
+        int numOfEnemiesAlive = GameObject.FindGameObjectsWithTag("Enemy").Length;
+        Debug.Log(numOfEnemiesAlive);
+        if(numOfEnemiesAlive == 0) 
+        {
+            tdm.GameWin();
+        }
     }
 }

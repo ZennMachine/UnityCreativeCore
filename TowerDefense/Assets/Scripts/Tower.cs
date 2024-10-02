@@ -77,6 +77,15 @@ public class Tower : MonoBehaviour
             }
             Invoke("TurnOffLineRenderer", 0.1f);
         }
+        
+        // Cleanup targets list
+        for(int i = 0; i < targets.Count; i++)
+        {
+            if (targets[i] == null)
+            {
+                targets.RemoveAt(i);
+            }
+        }
     }
 
     private void TurnOffLineRenderer()
