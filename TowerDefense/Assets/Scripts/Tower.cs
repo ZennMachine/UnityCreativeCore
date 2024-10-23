@@ -64,7 +64,13 @@ public class Tower : MonoBehaviour
         if(currentTarget != null)
         {
             Vector3 targetDir = turretHead.transform.position - currentTarget.transform.position;
-            turretHead.transform.Rotate(0, targetDir.y, 0);
+
+            Vector3 rotation = Quaternion.LookRotation(targetDir, Vector3.up).eulerAngles;
+            rotation.x = 0;
+            rotation.z = 0;
+
+            turretHead.transform.rotation = Quaternion.Euler(rotation);
+
             shootSource.pitch = Random.Range(0.4f, 1.8f);
             shootSource.Play();
             lr.gameObject.SetActive(true);
