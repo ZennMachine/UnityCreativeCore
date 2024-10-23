@@ -92,6 +92,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   towerObject: {fileID: 8996905994485918072, guid: 60711376e402a5c449be4085d41aa68c,
     type: 3}
+  BrokeVFX: {fileID: 392364590961578526, guid: 5b20dfbd0cf10ef468e3a1dcf410b424, type: 3}
   priceText: {fileID: 896009570989783256}
   myImage: {fileID: 4855587146671854916}
 --- !u!1 &3794979986055962209

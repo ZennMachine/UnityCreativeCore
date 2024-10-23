@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class DragTower : MonoBehaviour, IDragHandler, IDropHandler
 {
     public GameObject towerObject;
+    public GameObject BrokeVFX;
     private Vector3 startPosition;
     private TowerDefenseManager tdm;
     private int myTowerCost;
@@ -41,25 +42,35 @@ public class DragTower : MonoBehaviour, IDragHandler, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        if (tdm.coins >= myTowerCost)
+        bool validPos;
+
+        //First Check if the position is valid to build on.
+        //Then check costs and place building or instantiate a little notification
+        //That there is no money
+
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        LayerMask mask = LayerMask.GetMask("Tiles");
+        if (Physics.Raycast(ray, out hit, 1000.0f, mask))
         {
-            tdm.RemoveCoins(myTowerCost);
-
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            LayerMask mask = LayerMask.GetMask("Tiles");
-            if (Physics.Raycast(ray, out hit, 1000.0f, mask))
+            transform.position = startPosition;
+            if (hit.collider.CompareTag("Buildable"))
             {
-
-                if (hit.collider.CompareTag("Buildable"))
+                if (tdm.coins >= myTowerCost)
                 {
+                    tdm.RemoveCoins(myTowerCost);
+
                     PlaceTower(hit.collider.GetComponent<Tile>());
                 }
+                else
+                {
+                    GameObject vfxRef = Instantiate(BrokeVFX, hit.transform.position, Quaternion.identity);
+                    vfxRef.transform.Find("Canvas").GetComponent<Canvas>().worldCamera = Camera.main;
+                    Debug.Log("YOURE BROKE");
+
+                    Destroy(vfxRef, 2.0f);
+                }
             }
-        }
-        else
-        {
-            Debug.Log("YOURE BROKE");
         }
         transform.position = startPosition;
     }
